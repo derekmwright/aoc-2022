@@ -38,7 +38,7 @@ func (e *Elves) Add(inv Inventory) {
 	*e = append(*e, inv)
 }
 
-// ScanElves takes raw caloric values and converts it into individual Elves, modifies the group of elves in place.
+// ScanElves takes raw caloric values and converts it into individual Elves, returns a group of elves.
 func scanElves(r io.Reader) Elves {
 	e := make(Elves, 0)
 	s := bufio.NewScanner(r)
