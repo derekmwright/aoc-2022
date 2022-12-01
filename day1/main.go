@@ -9,8 +9,18 @@ import (
 	"strconv"
 )
 
+// Advent of Code Day 1
+//
+// Things I like:
+// - How the data is parsed and the data structures setup.
+// Things I'd like to improve upon:
+// - I think I could do the first part with a little better summing concurrency
+// - Not too proud of the 2nd part as I haven't thought up a good algo for retaining the top 3 values. Had to just finish it so I could start work, but may research options/methods for handling this scenario w/ better memory utilization.
+
+// Inventory represents the calories carried by an individual Elf.
 type Inventory []int
 
+// Sum returns the total caloric value of the elf's inventory.
 func (inv Inventory) Sum() int {
 	s := 0
 	for _, v := range inv {
@@ -20,12 +30,15 @@ func (inv Inventory) Sum() int {
 	return s
 }
 
+// Elves represents a group of elves who each have an inventory of caloric values.
 type Elves []Inventory
 
+// Add will append an elf to the group with its inventory of calories.
 func (e *Elves) Add(inv Inventory) {
 	*e = append(*e, inv)
 }
 
+// ScanInv takes raw caloric values and converts it into individual Elves, modifies the group of elves in place.
 func (e *Elves) ScanInv(r io.Reader) {
 	s := bufio.NewScanner(r)
 
@@ -47,6 +60,7 @@ func (e *Elves) ScanInv(r io.Reader) {
 	}
 }
 
+// Solves for part 1
 func Part1(elves Elves) int {
 	sums := make(chan int, len(elves))
 	go func() {
@@ -66,6 +80,7 @@ func Part1(elves Elves) int {
 	return high
 }
 
+// Solves for part 2
 func Part2(elves Elves) int {
 	rankings := make([]int, 0)
 
