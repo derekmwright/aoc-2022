@@ -88,10 +88,10 @@ func Part2(elves Elves) int {
 		rankings = append(rankings, elf.Sum())
 	}
 
-	sort.Sort(sort.Reverse(sort.IntSlice(rankings)))
+	sort.Ints(rankings)
 
 	sum := 0
-	for _, v := range rankings[0:3] {
+	for _, v := range rankings[len(rankings)-3:] {
 		sum += v
 	}
 
