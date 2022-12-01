@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"sort"
 	"strconv"
 )
 
@@ -65,6 +66,23 @@ func Part1(elves Elves) int {
 	return high
 }
 
+func Part2(elves Elves) int {
+	rankings := make([]int, 0)
+
+	for _, elf := range elves {
+		rankings = append(rankings, elf.Sum())
+	}
+
+	sort.Sort(sort.Reverse(sort.IntSlice(rankings)))
+
+	sum := 0
+	for _, v := range rankings[0:3] {
+		sum += v
+	}
+
+	return sum
+}
+
 func main() {
 	elves := make(Elves, 0)
 	r, err := os.Open("input.txt")
@@ -75,4 +93,5 @@ func main() {
 	elves.ScanInv(r)
 
 	fmt.Printf("Part 1: %d\n", Part1(elves))
+	fmt.Printf("Part 2: %d\n", Part2(elves))
 }
