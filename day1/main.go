@@ -38,8 +38,9 @@ func (e *Elves) Add(inv Inventory) {
 	*e = append(*e, inv)
 }
 
-// ScanInv takes raw caloric values and converts it into individual Elves, modifies the group of elves in place.
-func (e *Elves) ScanInv(r io.Reader) {
+// ScanElves takes raw caloric values and converts it into individual Elves, modifies the group of elves in place.
+func scanElves(r io.Reader) Elves {
+	e := make(Elves, 0)
 	s := bufio.NewScanner(r)
 
 	elf := make(Inventory, 0)
@@ -58,6 +59,8 @@ func (e *Elves) ScanInv(r io.Reader) {
 
 		elf = append(elf, cal)
 	}
+
+	return e
 }
 
 // Solves for part 1
@@ -99,13 +102,12 @@ func Part2(elves Elves) int {
 }
 
 func main() {
-	elves := make(Elves, 0)
 	r, err := os.Open("input.txt")
 	if err != nil {
 		panic(err)
 	}
 
-	elves.ScanInv(r)
+	elves := scanElves(r)
 
 	fmt.Printf("Part 1: %d\n", Part1(elves))
 	fmt.Printf("Part 2: %d\n", Part2(elves))
