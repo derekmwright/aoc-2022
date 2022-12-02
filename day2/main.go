@@ -66,26 +66,13 @@ var ValueP2 = map[string]int{
 	"Z": 6,
 }
 
-// PlayP1 will return the score of the play for part1
-func PlayP1(p1, p2 byte) int {
+// Play will return the score of the play for part1
+func Play(p1, p2 byte, lookup map[string]int, bonus map[string]int) int {
 	p := &strings.Builder{}
 	p.WriteByte(p1)
 	p.WriteByte(p2)
 
-	return LookupP1[p.String()] + ValueP1[string(p2)]
-}
-
-// PlayP2 will return the score of the play for part1
-func PlayP2(p1, p2 byte) int {
-	p := &strings.Builder{}
-	p.WriteByte(p1)
-	p.WriteByte(p2)
-
-	// Tells me what I play
-	play := LookupP2[p.String()]
-
-	// sum value of the play w/ the win/loss/draw bonus
-	return play + ValueP2[string(p2)]
+	return lookup[p.String()] + bonus[string(p2)]
 }
 
 func main() {
@@ -99,8 +86,8 @@ func main() {
 	sum2 := 0
 	for s.Scan() {
 		match := s.Text()
-		sum1 += PlayP1(match[0], match[2])
-		sum2 += PlayP2(match[0], match[2])
+		sum1 += Play(match[0], match[2], LookupP1, ValueP1)
+		sum2 += Play(match[0], match[2], LookupP2, ValueP2)
 	}
 
 	fmt.Printf("Part 1: %d\n", sum1)
