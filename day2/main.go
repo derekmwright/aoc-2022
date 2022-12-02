@@ -90,12 +90,14 @@ func Play(match string, lookup map[string]int, bonus map[string]int) int {
 //	1 - tie
 //	2 - win
 //
-// Scoring rules dictate that we get 0 for loss, 3 for tie, and 6 for a win, so all we need to do is multiply the result of our forumla by 3 and we have a completed score formula for part 1.
+// Scoring rules dictate that we get 0 for loss, 3 for tie, and 6 for a win, so all we need to do is multiply the result of our forumla by 3.
+// Finally we just need to get the bonus points for the item we used and add that to the sum.
+// We find the bonus amount by using the char value plus the offset then modulo 3 and add 1 (before one values are 0, 1, 2 and we need 1, 2, 3 per scoring rules).
 func Score(result string, offset int) int {
 	them := int(result[0])
 	me := int(result[2])
 
-	return (((me + offset) - them) % 3 * 3) + (((me + 2) % 3) + 1)
+	return (((me + offset) - them) % 3 * 3) + (((me + offset) % 3) + 1)
 }
 
 func main() {
