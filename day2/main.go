@@ -66,7 +66,7 @@ var ValueP2 = map[string]int{
 	"Z": 6,
 }
 
-// Play will return the score of the play for part1
+// Play will return the score of the play
 func Play(p1, p2 byte, lookup map[string]int, bonus map[string]int) int {
 	p := &strings.Builder{}
 	p.WriteByte(p1)
