@@ -8,20 +8,6 @@ import (
 	"strings"
 )
 
-const (
-	ROCK = iota
-	PAPER
-	SCISSORS
-)
-
-// ROCK > SCISSORS > PAPER > ROCK...
-
-type Round [2]byte
-
-func NewRound(p1, p2 byte) Round {
-	return Round([2]byte{p1, p2})
-}
-
 // Part 1 Play Results Table
 //
 //	AX AY AZ - 3 6 0
