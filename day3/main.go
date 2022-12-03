@@ -9,21 +9,6 @@ import (
 	"strings"
 )
 
-func Score1(sack string) int {
-	l := len([]byte(sack)) / 2
-
-	for _, v := range sack[0:l] {
-		if strings.Contains(sack[l:], string(v)) {
-			if int(v) >= 65 && int(v) <= 90 {
-				return int(v) - 38
-			}
-			return int(v) - 96
-		}
-	}
-
-	return 0
-}
-
 func uniq(in string) string {
 	s := &strings.Builder{}
 	for _, sub := range in {
@@ -34,16 +19,30 @@ func uniq(in string) string {
 	return s.String()
 }
 
+func scoreRune(r rune) int {
+	if int(r) >= 65 && int(r) <= 90 {
+		return int(r) - 38
+	}
+	return int(r) - 96
+}
+
+func Score1(sack string) int {
+	l := len([]byte(sack)) / 2
+
+	for _, v := range sack[0:l] {
+		if strings.Contains(sack[l:], string(v)) {
+			return scoreRune(v)
+		}
+	}
+	return 0
+}
+
 func Score2(group []string) int {
 	for _, v := range group[0] {
 		if strings.Contains(group[1], string(v)) && strings.Contains(group[2], string(v)) {
-			if int(v) >= 65 && int(v) <= 90 {
-				return int(v) - 38
-			}
-			return int(v) - 96
+			return scoreRune(v)
 		}
 	}
-
 	return 0
 }
 
@@ -57,6 +56,7 @@ func main() {
 
 	sum1 := 0
 	sum2 := 0
+
 	group := 0
 	groupSack := make([]string, 0)
 	for s.Scan() {
@@ -75,6 +75,6 @@ func main() {
 		sum1 += Score1(s.Text())
 	}
 
-	fmt.Println(sum1)
-	fmt.Println(sum2)
+	fmt.Printf("Part 1: %d\n", sum1)
+	fmt.Printf("Part 2: %d\n", sum2)
 }
