@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"sort"
 	"strings"
 )
 
@@ -37,9 +36,9 @@ func Score1(sack string) int {
 	return 0
 }
 
-func Score2(group []string) int {
-	for _, v := range group[0] {
-		if strings.Contains(group[1], string(v)) && strings.Contains(group[2], string(v)) {
+func Score2(group string) int {
+	for _, v := range group {
+		if strings.Count(group, string(v)) == 3 {
 			return scoreRune(v)
 		}
 	}
@@ -62,16 +61,17 @@ func main() {
 	for s.Scan() {
 		// Compress strings using uniq func
 		groupSack = append(groupSack, uniq(s.Text()))
+
 		group++
-		if group == 3 {
-			// Sort the slice by length so we only need to iterate the short ones first
-			sort.Slice(groupSack, func(i, j int) bool {
-				return len(groupSack[i]) < len(groupSack[j])
-			})
-			sum2 += Score2(groupSack)
+
+		if (group % 3) == 0 {
+			j := strings.Join(groupSack, "")
+
+			sum2 += Score2(j)
+
 			groupSack = make([]string, 0)
-			group = 0
 		}
+
 		sum1 += Score1(s.Text())
 	}
 
