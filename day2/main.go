@@ -93,11 +93,27 @@ func Play(match string, lookup map[string]int, bonus map[string]int) int {
 // Scoring rules dictate that we get 0 for loss, 3 for tie, and 6 for a win, so all we need to do is multiply the result of our forumla by 3.
 // Finally we just need to get the bonus points for the item we used and add that to the sum.
 // We find the bonus amount by using the char value plus the offset then modulo 3 and add 1 (before one values are 0, 1, 2 and we need 1, 2, 3 per scoring rules).
-func Score(result string, offset int) int {
-	them := int(result[0])
-	me := int(result[2])
+func Score(match string, offset int) int {
+	them := int(match[0])
+	me := int(match[2])
 
 	return (((me + offset) - them) % 3 * 3) + (((me + offset) % 3) + 1)
+}
+
+// Score2 was a bit more rough on the math side.
+// Created more var assignments to help break this one down.
+// We use an offset again to align the scales between plays and lose/draw/win.
+// Then we are able to use a modulo against the offset to determine if we need to lose/draw/win (NEED)
+// Them we can use the need value to determine what item is used to get the desired outcome.
+// Again we use modulo to wrap values back to 0, 1, or 2, add 1 to get the desired item value of 1,2 or 3.
+// Then we are able to take the item value (1,2 or 3) and add it to the need (defines if we won or not) which is multiplied by 3, per scoring rules.
+func Score2(match string, offset int) int {
+	them := int(match[0])
+	result := int(match[2])
+	need := (result + offset) % 3
+	item := ((them + need) % 3) + 1
+
+	return (item + (need * 3))
 }
 
 func main() {
@@ -113,15 +129,18 @@ func main() {
 	sum1 := 0
 	sum2 := 0
 	sum3 := 0
+	sum4 := 0
 
 	for s.Scan() {
 		match := s.Text()
 		sum1 += Play(match, LookupP1, ValueP1)
 		sum2 += Play(match, LookupP2, ValueP2)
 		sum3 += Score(match, offset)
+		sum4 += Score2(match, offset)
 	}
 
 	fmt.Printf("Part 1: %d\n", sum1)
 	fmt.Printf("Part 2: %d\n", sum2)
 	fmt.Printf("Maths: %d\n", sum3)
+	fmt.Printf("Maths: %d\n", sum4)
 }
