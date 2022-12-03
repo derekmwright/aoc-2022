@@ -56,22 +56,19 @@ func main() {
 	}
 
 	s := bufio.NewScanner(f)
-
 	sum1 := 0
 	sum2 := 0
-
 	group := 0
 	groupSack := make([]string, 0)
+
 	for s.Scan() {
 		// Compress strings using uniq func
 		groupSack = append(groupSack, uniq(s.Text()))
-
 		group++
 
 		if (group % 3) == 0 {
 			// Join the 3 strings into a single string and score it
 			j := strings.Join(groupSack, "")
-
 			sum2 += Score2(j)
 
 			// Reset groupSack to hold next 3 iterations
