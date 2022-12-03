@@ -36,6 +36,10 @@ func Score1(sack string) int {
 	return 0
 }
 
+// Score2 takes a string that is a concatenation of the uniqued 3 rucksacks.
+// Then each rune is checked to see if it occurs 3 times.
+// As soon as the condition is met, the value is scored and returned.
+// A 0 is returned if a condition is never met, this should never occur.
 func Score2(group string) int {
 	for _, v := range group {
 		if strings.Count(group, string(v)) == 3 {
@@ -65,10 +69,12 @@ func main() {
 		group++
 
 		if (group % 3) == 0 {
+			// Join the 3 strings into a single string and score it
 			j := strings.Join(groupSack, "")
 
 			sum2 += Score2(j)
 
+			// Reset groupSack to hold next 3 iterations
 			groupSack = make([]string, 0)
 		}
 
