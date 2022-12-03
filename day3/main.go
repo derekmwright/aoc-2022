@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// uniq returns only uniq characters found in string.
 func uniq(in string) string {
 	s := &strings.Builder{}
 	for _, sub := range in {
@@ -18,6 +19,18 @@ func uniq(in string) string {
 	return s.String()
 }
 
+// scoreRune takes a rune and applies the scoring rules for the puzzle to it.
+//
+//	a-z are scored 1-26
+//	A-Z are scored 27-52
+//
+// However ASCII char values are reversed and `A-Z` is a lower val than `a-z`.
+//
+//	A-Z are 65-90
+//	a-z are 97-122
+//
+// To get the proper value of `a` we can subtract 96 from is which sets its value back to 1
+// To get the proper value of `A` we can offset the ASCII value by 38 which sets it back to 27
 func scoreRune(r rune) int {
 	if int(r) > 96 {
 		return int(r) - 96
@@ -25,6 +38,10 @@ func scoreRune(r rune) int {
 	return int(r) - 38
 }
 
+// Score1 takes a string and splits it in half.
+// Then it iterates over the first string for each rune and checks to see if the 2nd half contains it.
+// It returns as soon as a match is found.
+// If no match is found it returns 0, this should never occur.
 func Score1(sack string) int {
 	l := len([]byte(sack)) / 2
 
