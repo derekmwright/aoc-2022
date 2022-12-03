@@ -20,10 +20,10 @@ func uniq(in string) string {
 }
 
 func scoreRune(r rune) int {
-	if int(r) >= 65 && int(r) <= 90 {
-		return int(r) - 38
+	if int(r) > 96 {
+		return int(r) - 96
 	}
-	return int(r) - 96
+	return int(r) - 38
 }
 
 func Score1(sack string) int {
