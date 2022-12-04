@@ -20,6 +20,7 @@ type Range [2]int
 func NewRange(rng string) Range {
 	s := strings.Split(rng, "-")
 
+	// We tend to be able to trust AoC inputs so I don't get clever with error handling.
 	start, err := strconv.Atoi(s[0])
 	if err != nil {
 		panic(err)
@@ -33,7 +34,7 @@ func NewRange(rng string) Range {
 	return Range{start, end}
 }
 
-// contains returns true if the provided range is within the canonoical range.
+// contains returns true if the provided range is within the source range.
 // Example:
 //
 //	Range{2,6}.contains(Range{2,4}) -> true
@@ -42,7 +43,7 @@ func (r Range) contains(in Range) bool {
 	return in[0] >= r[0] && in[1] <= r[1]
 }
 
-// overlaps returns true if the provided range's boundary overlaps the canonical range.
+// overlaps returns true if the provided range's boundary overlaps the source range.
 // Example:
 //
 //	Range{2,4}.overlaps(Range{4,6}) -> true
