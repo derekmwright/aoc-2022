@@ -8,27 +8,6 @@ import (
 	"strings"
 )
 
-// // Stack Diagram
-//
-//	[A]
-//	[B] [C]
-//	[D] [E] [F]
-//	 1   2   3
-//
-// move 1 from 2 to 3
-//
-// Rows give us how many stacks we should have, however shorter rows are not padded to match full length rows.
-// We need to keep track of how many crates per row we scan in account for gaps between stacks.
-//
-// # Crate identifiers are single character
-//
-// # If read from top to bottom
-//
-// stacks = [['A','C'],[”,'D'],['B','E']]
-//
-// from 1 move 1 to 2
-//
-// stacks = [['C'],['A','D']['B','E']]
 const (
 	SCRATE  = '['
 	ECRATE  = ']'
@@ -156,7 +135,6 @@ func (l *Lexer) Scan() *Inventory {
 			st += 1
 		case SPACE:
 			if l.peekChar() == SPACE {
-				// s[st].addCrate(0)
 				st += 1
 				l.readPosition += 3
 			}
