@@ -63,16 +63,16 @@ func (s *Stack) addCrate(ident byte) {
 
 type Stacks []Stack
 
-func (s *Stacks) move(num, src, dst int) {
+func (s Stacks) move(num, src, dst int) {
 	for i := 0; i < num; i++ {
-		(*s)[dst] = append((*s)[dst], (*s)[src][len((*s)[src])-1])
-		(*s)[src] = (*s)[src][:len((*s)[src])-1]
+		s[dst] = append(s[dst], s[src][len(s[src])-1])
+		s[src] = s[src][:len(s[src])-1]
 	}
 }
 
-func (s *Stacks) moveChunk(num, src, dst int) {
-	(*s)[dst] = append((*s)[dst], (*s)[src][(len((*s)[src])-num):len((*s)[src])]...)
-	(*s)[src] = (*s)[src][:len((*s)[src])-num]
+func (s Stacks) moveChunk(num, src, dst int) {
+	s[dst] = append(s[dst], s[src][(len(s[src])-num):len(s[src])]...)
+	s[src] = s[src][:len(s[src])-num]
 }
 
 type Instruction struct {
