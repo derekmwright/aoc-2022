@@ -70,6 +70,11 @@ func (s *Stacks) move(num, src, dst int) {
 	}
 }
 
+func (s *Stacks) moveChunk(num, src, dst int) {
+	(*s)[dst] = append((*s)[dst], (*s)[src][(len((*s)[src])-num):len((*s)[src])]...)
+	(*s)[src] = (*s)[src][:len((*s)[src])-num]
+}
+
 type Instruction struct {
 	NumItems    int
 	Source      int
@@ -94,7 +99,8 @@ func (i *Inventory) Execute() string {
 	}
 
 	for _, inst := range i.Instructions {
-		i.Stacks.move(inst.NumItems, inst.Source, inst.Destination)
+		//i.Stacks.move(inst.NumItems, inst.Source, inst.Destination)
+		i.Stacks.moveChunk(inst.NumItems, inst.Source, inst.Destination)
 	}
 
 	result := &strings.Builder{}
