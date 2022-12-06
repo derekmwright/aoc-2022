@@ -91,8 +91,6 @@ type Inventory struct {
 
 func (i *Inventory) Execute(chunk bool) string {
 	// Reverse the stacks so that we always move from the top (end of the slice), since we read from top to bottom.
-	fmt.Println(i.Stacks)
-
 	for _, s := range i.Stacks {
 		for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
 			s[i], s[j] = s[j], s[i]
