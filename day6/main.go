@@ -12,10 +12,7 @@ type Scanner struct {
 }
 
 func NewScanner(b []byte) Scanner {
-	return Scanner{
-		input:    b,
-		position: 0,
-	}
+	return Scanner{b, 0}
 }
 
 func (s Scanner) Scan(size int) int {
