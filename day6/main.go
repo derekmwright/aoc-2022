@@ -56,6 +56,7 @@ func (s Scanner) Scan(size int) int {
 }
 
 func (s Scanner) ScanNew(size int) int {
+	s.window = make(Window, 0)
 	for s.position < (len(s.input) - size) {
 		s.window.add(s.input[s.position])
 		if s.position >= size {
