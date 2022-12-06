@@ -77,6 +77,6 @@ func main() {
 	}
 
 	s := NewScanner(f)
-	fmt.Println(s.Scan(4))
-	fmt.Println(s.Scan(14))
+	fmt.Println(s.ScanNew(4))
+	fmt.Println(s.ScanNew(14))
 }
