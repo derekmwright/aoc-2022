@@ -66,11 +66,11 @@ func (s Stacks) move(chunk bool, num, src, dst int) {
 	if chunk {
 		s[dst] = append(s[dst], s[src][(len(s[src])-num):len(s[src])]...)
 		s[src] = s[src][:len(s[src])-num]
-	} else {
-		for i := 0; i < num; i++ {
-			s[dst] = append(s[dst], s[src][len(s[src])-1])
-			s[src] = s[src][:len(s[src])-1]
-		}
+		return
+	}
+	for i := 0; i < num; i++ {
+		s[dst] = append(s[dst], s[src][len(s[src])-1])
+		s[src] = s[src][:len(s[src])-1]
 	}
 }
 
