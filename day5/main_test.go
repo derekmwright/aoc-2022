@@ -41,7 +41,7 @@ func TestLexer(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			l := NewLexer(tt.have)
 			got := l.Scan()
-			fmt.Printf("%+v\n", got.Execute())
+			fmt.Printf("%+v\n", got.Execute(false))
 		})
 	}
 }

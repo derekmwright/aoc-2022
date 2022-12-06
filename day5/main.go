@@ -80,8 +80,8 @@ type Instruction struct {
 	Destination int
 }
 
-func NewInstruction(num, src, dst int) *Instruction {
-	return &Instruction{num, src, dst}
+func NewInstruction(num, src, dst int) Instruction {
+	return Instruction{num, src, dst}
 }
 
 type Inventory struct {
@@ -153,7 +153,7 @@ func (l *Lexer) Scan() *Inventory {
 
 			n, s, d := 0, 0, 0
 			fmt.Fscanf(inbuf, "move %d from %d to %d\n", &n, &s, &d)
-			inst = append(inst, *NewInstruction(n, s-1, d-1))
+			inst = append(inst, NewInstruction(n, s-1, d-1))
 		case 0:
 			if len(s[st]) != 0 {
 				st = 0
