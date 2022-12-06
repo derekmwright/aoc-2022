@@ -10,7 +10,6 @@ import (
 
 const (
 	SCRATE  = '['
-	ECRATE  = ']'
 	SPACE   = ' '
 	NEWLINE = '\n'
 	INSTART = 'm' // instructions start with a lowercase m
@@ -63,16 +62,16 @@ func (s *Stack) addCrate(ident byte) {
 
 type Stacks []Stack
 
-func (s Stacks) move(num, src, dst int) {
-	for i := 0; i < num; i++ {
-		s[dst] = append(s[dst], s[src][len(s[src])-1])
-		s[src] = s[src][:len(s[src])-1]
+func (s Stacks) move(chunk bool, num, src, dst int) {
+	if chunk {
+		s[dst] = append(s[dst], s[src][(len(s[src])-num):len(s[src])]...)
+		s[src] = s[src][:len(s[src])-num]
+	} else {
+		for i := 0; i < num; i++ {
+			s[dst] = append(s[dst], s[src][len(s[src])-1])
+			s[src] = s[src][:len(s[src])-1]
+		}
 	}
-}
-
-func (s Stacks) moveChunk(num, src, dst int) {
-	s[dst] = append(s[dst], s[src][(len(s[src])-num):len(s[src])]...)
-	s[src] = s[src][:len(s[src])-num]
 }
 
 type Instruction struct {
@@ -90,8 +89,10 @@ type Inventory struct {
 	Instructions []Instruction
 }
 
-func (i *Inventory) Execute() string {
+func (i *Inventory) Execute(chunk bool) string {
 	// Reverse the stacks so that we always move from the top (end of the slice), since we read from top to bottom.
+	fmt.Println(i.Stacks)
+
 	for _, s := range i.Stacks {
 		for i, j := 0, len(s)-1; i < j; i, j = i+1, j-1 {
 			s[i], s[j] = s[j], s[i]
@@ -99,8 +100,7 @@ func (i *Inventory) Execute() string {
 	}
 
 	for _, inst := range i.Instructions {
-		//i.Stacks.move(inst.NumItems, inst.Source, inst.Destination)
-		i.Stacks.moveChunk(inst.NumItems, inst.Source, inst.Destination)
+		i.Stacks.move(chunk, inst.NumItems, inst.Source, inst.Destination)
 	}
 
 	result := &strings.Builder{}
@@ -114,19 +114,6 @@ func (i *Inventory) Execute() string {
 	return result.String()
 }
 
-// scanCrate returns the byte identifier for a crate, this may be a byte value that representing an ASCII character or 0 which indicates empty.
-func (l *Lexer) scanCrate() byte {
-	if l.ch == SCRATE {
-		l.readChar() // we already know the crate started, move to identifier
-		b := l.ch
-		l.readChar()
-		return b
-	}
-	// We are going to assume the Row Scanner picked up a space and we are going to return empty crate
-	l.readPosition += 2
-	return 0
-}
-
 // ScanLine scans a line out of the lexer and returns the stack that was parsed.
 func (l *Lexer) Scan() *Inventory {
 	s := make(Stacks, 10) // feels a lil cheaty but looking at the input we dont have more than 9 rows
@@ -137,7 +124,9 @@ func (l *Lexer) Scan() *Inventory {
 	for {
 		switch l.ch {
 		case SCRATE:
-			s[st].addCrate(l.scanCrate())
+			l.readChar()
+			s[st].addCrate(l.ch)
+			l.readChar()
 			st += 1
 		case SPACE:
 			if l.peekChar() == SPACE {
@@ -193,7 +182,13 @@ func main() {
 		log.Fatalln(err)
 	}
 
+	// Part One - Uses serial move
 	l := NewLexer(string(f))
 	inv := l.Scan()
-	fmt.Println(inv.Execute())
+	fmt.Println(inv.Execute(false))
+
+	// Part Two - Uses chunked move
+	l = NewLexer(string(f))
+	inv = l.Scan()
+	fmt.Println(inv.Execute(true))
 }
